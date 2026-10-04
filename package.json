@@ -1,0 +1,26 @@
+{
+  "name": "slack-mirror",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Personal Slack client that is a database: realtime mirror of everything you can see, including exact read state.",
+  "license": "UNLICENSED",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.bun.json",
+    "test": "bun test",
+    "check": "bun run typecheck && bun run test",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "login": "bun scripts/login.ts"
+  },
+  "dependencies": {
+    "@cloudflare/workers-oauth-provider": "1.2.1",
+    "effect": "^3.22.2"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "5.20260917.1",
+    "@types/bun": "^1.4.2",
+    "typescript": "~5.9.3",
+    "wrangler": "4.134.0"
+  }
+}

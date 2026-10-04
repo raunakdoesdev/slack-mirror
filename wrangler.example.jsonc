@@ -1,0 +1,30 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "slack-mirror",
+  "main": "src/cloudflare/worker.ts",
+  "compatibility_date": "2026-09-01",
+  "workers_dev": true,
+  // AUTH_HOST must be a custom domain on this Worker, protected by Cloudflare Access (or another gateway that sets a trusted identity header).
+  "durable_objects": { "bindings": [{ "name": "MIRROR", "class_name": "MirrorDO" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["MirrorDO"] }],
+  "observability": { "enabled": true },
+  "kv_namespaces": [
+    { "binding": "OAUTH_KV", "id": "<kv namespace id>" }
+  ],
+  "routes": [
+    { "pattern": "slack-mirror.example.com", "custom_domain": true }
+  ],
+  "vars": {
+    "PUBLIC_URL": "https://slack-mirror.<account>.workers.dev",
+    "AUTH_HOST": "slack-mirror.example.com",
+    "OWNER_EMAIL": "you@example.com",
+    // Header your gateway sets to the signed-in email; Cloudflare Access's by default.
+    // "IDENTITY_EMAIL_HEADER": "cf-access-authenticated-user-email",
+    // Optional extra gateway headers that must match exactly (JSON object).
+    // "IDENTITY_REQUIRE": "{\"x-org-id\":\"...\"}",
+    "CHANNEL_HISTORY_HOURS": "48",
+    "DM_HISTORY_HOURS": "48",
+    "THREAD_HISTORY_HOURS": "48"
+  }
+  // Secrets (wrangler secret put): SLACK_TOKEN + SLACK_COOKIE (Slack web session), SESSION_KEY.
+}
